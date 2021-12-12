@@ -1,20 +1,19 @@
 import json
 
 from fastapi import FastAPI
-from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# URL of the frontend app
+# URL of the frontend app
 origins = [
     "https://localhost:8100"
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins = origins,
-    allow_credentials = True,
+    allow_origins = ["*"],
+    allow_credentials = False,
     allow_methods = ["*"],
     allow_headers =["*"]
 )
@@ -27,12 +26,15 @@ async def get_ofertas():
     with open('promos.json') as f:
         promos = json.load(f)
     response = []
+    id = 0 
     for promo in promos:
         response.append(
-            {
+            {   
+                "id": id,
                 "name": promo['name'],
-                "precio": promo['price'],
+                "price": promo['price'],
                 "url": f"images/{ promo['images'][0]['path'] }" #directory of static images in frontend
             }
         )
-    return json.dumps(response)
+        id += 1
+    return response
