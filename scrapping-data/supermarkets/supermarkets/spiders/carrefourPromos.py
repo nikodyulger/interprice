@@ -1,9 +1,9 @@
-import scrapy
+from scrapy import Spider, Request
 from scrapy_playwright.page import PageCoroutine
-from ..items import CarrefourPromoItem
+from ..items import ProductItem
 
 
-class carrefourPromosSpider(scrapy.Spider):
+class carrefourPromosSpider(Spider):
     name = 'carrefourPromos'
     start_urls = [
         'https://www.carrefour.es/supermercado/el-mercado-promocion/F-10flZ1023/c',  # initial page
@@ -30,11 +30,11 @@ class carrefourPromosSpider(scrapy.Spider):
     num_pages = 3
 
     def start_requests(self):
-        yield scrapy.Request(url=self.start_urls[0],
+        yield Request(url=self.start_urls[0],
                              callback=self.parse,
                              meta=self.r_meta)
         for offset in range(1,self.num_pages):
-            yield scrapy.Request(url=self.start_urls[-1].format(offset=offset*24),
+            yield Request(url=self.start_urls[-1].format(offset=offset*24),
                                 callback=self.parse,
                                 meta=self.r_meta)
 
@@ -55,8 +55,9 @@ class carrefourPromosSpider(scrapy.Spider):
 
             url_img = promo.css(
                 'img.product-card__image::attr(data-src)').get()
+                
             if url_img == None:
                 url_img = promo.css(
                     'img.product-card__image::attr(src)').get()
 
-            yield CarrefourPromoItem(name=name, price=price, image_urls=[url_img])
+            yield ProductItem(name=name, price=price, image_urls=[url_img])
