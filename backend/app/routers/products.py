@@ -12,7 +12,7 @@ router = APIRouter()
     summary="Catalog of products"
 )
 async def get_products(skip: int=0, limit: int = 100, q_name: Optional[str] = None, db: Session = Depends(get_db)):
-    products = crud.get_products(db, skip=skip, limit=limit, q_name=q_name, cat=cat)
+    products = crud.get_products(db, skip=skip, limit=limit, q_name=q_name)
     return products
 
 @router.get(

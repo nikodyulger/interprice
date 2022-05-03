@@ -6,7 +6,7 @@ import os
 user = os.environ['DB_USER']
 password =  os.environ['DB_PASSWORD']
 port = os.environ['DB_PORT']
-db_name = os.environp['DB_NAME']
+db_name = os.environ['DB_NAME']
 host = os.environ['RDS_HOST']
 
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{user}:{password}@{host}/{db_name}"
