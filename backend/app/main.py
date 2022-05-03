@@ -1,9 +1,14 @@
 from fastapi import FastAPI
 from mangum import Mangum
 from app.routers import products, categories
+import os
+
+STAGE = os.environ['STAGE']
+root_path = '/' if not STAGE else f'/{STAGE}'
 
 app = FastAPI(
-    title="Inter-Price-The-Supermarket-Comparator"
+    title="Inter-Price-The-Supermarket-Comparator",
+    root_path=root_path
 )
 
 app.include_router(products.router, tags=["Products"])
