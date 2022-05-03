@@ -16,3 +16,7 @@ pip-delete-this-directory.txt
 
 # Logs
 *.log
+
+node_modules
+
+.serverless
