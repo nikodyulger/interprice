@@ -24,6 +24,8 @@ functions:
       NAME: ${env:NAME}
       PASSWORD: ${env:PASSWORD}
       DB_NAME: ${env:DB_NAME}
+      SNS_TOPIC_ARN: ${env:SNS_TOPIC_ARN}
+      S3_IMAGE_URL: ${env:S3_IMAGE_URL}
     vpc:
       securityGroupIds:
         - ${env:SEC_GROUP_ID}
@@ -31,11 +33,4 @@ functions:
         - ${env:SUBNET_A}
         - ${env:SUBNET_B}
         - ${env:SUBNET_C}
-    destinations:
-      onSuccess: notify
-      onFailure: notify
-  notify:
-    handler: handler.notify
-    environment: 
-      SNS_TOPIC_ARN: ${env:SNS_TOPIC_ARN}
 
