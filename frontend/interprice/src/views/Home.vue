@@ -1,21 +1,63 @@
 <template>
   <ion-page>
-    <ion-header :translucent="true">
-      <ion-toolbar>
-        <ion-title>Interprice</ion-title>
-      </ion-toolbar>
-    </ion-header>
+    <Header />
+    <br />
+    <ion-content fullscreen class="ion-padding">
+      <ion-grid>
+        <ion-row>
+          <ion-searchbar
+            color="light"
+            enterkeyhint="enter"
+            inputmode="search"
+            type="search"
+            @search="getSearchedInput($event)"
+            v-model="search"
+            placeholder="Busca productos"
+            search-icon="search-outline"
+            animated
+          ></ion-searchbar>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <Filters />
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-text-end">
+          <ion-col pull="1">
+            <ion-text>Ordenar por: </ion-text>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Promociones</ion-title>
-        </ion-toolbar>
-      </ion-header>
+            <ion-text>A-Z</ion-text>
+            |
+            <ion-text>Precio</ion-text>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <!-- <ion-col size="3">
+          </ion-col> -->
 
-      <ion-list>
-        <PromoListItem v-for="promo in promos" :key="promo.id" :promo="promo" />
-      </ion-list>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+          <ion-col>
+            <ProductCard />
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <PagesControl/>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>
@@ -23,14 +65,20 @@
 <script lang="ts">
 import axios from "axios";
 import {
-  IonContent,
-  IonHeader,
-  IonList,
   IonPage,
-  IonTitle,
-  IonToolbar,
+  IonText,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonSearchbar,
 } from "@ionic/vue";
-import PromoListItem from "@/components/PromoListItem.vue";
+
+// import PromoListItem from "@/components/PromoListItem.vue";
+import Header from "@/components/Header.vue";
+import ProductCard from "@/components/ProductCard.vue";
+import Filters from "@/components/Filters.vue";
+import PagesControl from "@/components/PagesControl.vue";
 import { defineComponent } from "vue";
 
 export default defineComponent({
@@ -38,6 +86,7 @@ export default defineComponent({
   data() {
     return {
       promos: null,
+      search: "",
     };
   },
   mounted() {
@@ -47,13 +96,26 @@ export default defineComponent({
       .catch((err) => console.log(err.message));
   },
   components: {
-    IonContent,
-    IonHeader,
-    IonList,
     IonPage,
-    IonTitle,
-    IonToolbar,
-    PromoListItem,
+    IonText,
+    IonContent,
+    IonGrid,
+    IonRow,
+    IonCol,
+    IonSearchbar,
+    Header,
+    Filters,
+    ProductCard,
+    PagesControl
+  },
+  methods: {
+    getSearchedInput(event: Event) {
+      console.log(event);
+      console.log(this.search);
+    },
   },
 });
 </script>
+<style scoped>
+
+</style>
