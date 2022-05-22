@@ -42,3 +42,6 @@ pip-delete-this-directory.txt
 **Thumbs.db
 **UserInterfaceState.xcuserstate
 **$RECYCLE.BIN/
+
+# Serverless Frameworks
+.serverless
