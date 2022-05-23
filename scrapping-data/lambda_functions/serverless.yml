@@ -33,4 +33,7 @@ functions:
         - ${env:SUBNET_A}
         - ${env:SUBNET_B}
         - ${env:SUBNET_C}
+        - ${env:SUBNET_D}
+        - ${env:SUBNET_E}
+        - ${env:SUBNET_F}
 
