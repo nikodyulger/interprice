@@ -4,7 +4,7 @@ from ..items import ProductItem
 from datetime import datetime 
 from w3lib.html import remove_tags
 import json
-
+import requests
 
 class carrefourSpider(Spider):
     name = 'Carrefour'
@@ -106,3 +106,6 @@ class carrefourSpider(Spider):
                               manufacturer=manufacturer,
                               image_urls=pr_info['url_img'],
                               last_updated=datetime.today().strftime('%Y-%m-%d'))
+    def closed(self, reason):
+        if reason == 'finished':
+            requests.get('https://lqt7l5fcxpnnmiv5lkgy3judc40lnxbo.lambda-url.us-east-1.on.aws/?key=%(name)s_%(time)s')

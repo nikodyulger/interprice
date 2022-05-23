@@ -3,6 +3,7 @@ from scrapy.http import JsonRequest
 from ..items import ProductItem
 from datetime import datetime 
 import json
+import requests
 
 
 class consumSpider(Spider):
@@ -57,3 +58,7 @@ class consumSpider(Spider):
                               price_per_unit=price_per_unit,
                               image_urls=[url_img],
                               last_updated=datetime.today().strftime('%Y-%m-%d'))
+
+    def closed(self, reason):
+        if reason == 'finished':
+            requests.get('https://lqt7l5fcxpnnmiv5lkgy3judc40lnxbo.lambda-url.us-east-1.on.aws/?key=%(name)s_%(time)s')
