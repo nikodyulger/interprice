@@ -21,7 +21,7 @@ def data_pipeline(event, context):
     logger.setLevel(logging.INFO)
 
     # Initialize counters
-    new_items, changed_rows = 0,0
+    new_items, changed_rows, new_prices = 0, 0, 0
 
     # Setting SNS client
     sns_topic_arn = os.environ['SNS_TOPIC_ARN']
@@ -76,7 +76,7 @@ def data_pipeline(event, context):
                             )
                 logger.info(
                     f"Product ({product['product_id']},'{product['supermarket']}') inserted")
-                new_items += 1 
+                new_items += 1
             except pymysql.err.MySQLError:
                 query = """INSERT INTO product (product_id, supermarket, name, category, image_url,image_url_s3) 
                     VALUES (%s, %s, %s, %s,%s,%s) 
@@ -126,16 +126,29 @@ def data_pipeline(event, context):
 
             conn.commit()
 
-            query = """INSERT INTO product_prices (product_id, supermarket, price, price_per_unit, updated)
-                VALUES (%s, %s, %s, %s, %s)"""
+            query = """SELECT product_id, supermarket, updated FROM product_prices
+                    WHERE product_id = %s AND supermarket = %s AND updated = %s"""
 
-            cur.execute(
-                query,
-                (product['product_id'], product['supermarket'],
-                 product['price'], product['price_per_unit'], product['last_updated'])
-            )
+            cur.execute(query,
+                        (product['product_id'], product['supermarket'], product['last_updated']))
 
-            conn.commit()
+            if cur.rowcount == 0:
+                query = """INSERT INTO product_prices (product_id, supermarket, price, price_per_unit, updated)
+                    VALUES (%s, %s, %s, %s, %s)"""
+
+                cur.execute(
+                    query,
+                    (product['product_id'], product['supermarket'],
+                     product['price'], product['price_per_unit'], product['last_updated'])
+                )
+
+                conn.commit()
+                new_prices += 1 
+                logger.info(
+                    f"Product ({product['product_id']},'{product['supermarket']}) price updated")
+            else:
+                logger.info(
+                    f"Product ({product['product_id']},'{product['supermarket']}) price already up to date")
 
         cur.close()
 
@@ -146,10 +159,15 @@ def data_pipeline(event, context):
         "statusCode": 200,
         "body": json.dumps({
             "msg": "Everything when OK!!",
+            "spider": event['queryStringParameters']['key'],
             "new_items": new_items,
-            "changed_rows": changed_rows
+            "changed_rows": changed_rows,
+            "new_prices": new_prices
         })
     }
+
+    logger.info(json.dumps(message))
+
     response = sns.publish(
         TopicArn=sns_topic_arn,
         Message=json.dumps(message)
