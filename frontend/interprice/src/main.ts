@@ -23,10 +23,16 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/* Helpers */
+import filters from './helpers/filters';
+
 const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
-  
+.use(IonicVue)
+.use(router);
+
+/* Global Helpers */
+app.config.globalProperties.$filters = filters;
+
 router.isReady().then(() => {
   app.mount('#app');
 });

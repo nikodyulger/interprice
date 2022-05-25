@@ -10,7 +10,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/:supermercado/:product_id',
+    path: '/:supermarket/:productId',
     name: "ProductDetails",
     component: ProductDetails,
     props: true
