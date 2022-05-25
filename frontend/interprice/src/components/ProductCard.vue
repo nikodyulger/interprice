@@ -1,19 +1,18 @@
 <template>
-  <ion-card>
-    <img
-      @click="() => router.push('/Carrefour/123')"
-      src="https://static.carrefour.es/hd_350x_/img_pim_food/035834_00_1.jpg"
-    />
-    <ion-card-header button router-link="/Carrefour/123">
+  <ion-card class="ion-text-center ion-align-items-stretch">
+    <img @click="() => router.push({ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId }})" :src=imageUrl height="150" width="150" />
+    <ion-card-header class="ion-text-start" button router-link="{ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId}}">
       <ion-card-subtitle>
-        <ion-text>Carrefour</ion-text>
+        <ion-text>{{ supermarket }}</ion-text>
       </ion-card-subtitle>
       <ion-card-title>
-        <ion-text>Banana a granel</ion-text>
+        <ion-text>
+          <h5>{{ name }}</h5>
+        </ion-text>
       </ion-card-title>
     </ion-card-header>
-    <ion-card-content>
-      <ion-text><strong>1,25$</strong></ion-text>
+    <ion-card-content class="ion-text-start">
+      <ion-text><strong>{{ $filters.currency(price) }}</strong></ion-text>
     </ion-card-content>
     <ion-item lines="none">
       <ion-button size="small" slot="end">Comparar</ion-button>
@@ -40,6 +39,13 @@ export default defineComponent({
     IonCardHeader,
     IonCardContent,
     IonCardSubtitle,
+  },
+  props: {
+    productId: Number,
+    supermarket: String,
+    name: String,
+    imageUrl: String,
+    price: Number
   },
   setup() {
     const router = useRouter();
