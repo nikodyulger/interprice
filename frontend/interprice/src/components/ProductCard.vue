@@ -1,7 +1,10 @@
 <template>
   <ion-card class="ion-text-center ion-align-items-stretch">
-    <img @click="() => router.push({ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId }})" :src=imageUrl height="150" width="150" />
-    <ion-card-header class="ion-text-start" button router-link="{ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId}}">
+    <img
+      @click="() => router.push({ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId } })"
+      :src=imageUrl height="150" width="150" />
+    <ion-card-header class="ion-text-start" button
+      router-link="{ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId}}">
       <ion-card-subtitle>
         <ion-text>{{ supermarket }}</ion-text>
       </ion-card-subtitle>
@@ -15,13 +18,15 @@
       <ion-text><strong>{{ $filters.currency(price) }}</strong></ion-text>
     </ion-card-content>
     <ion-item lines="none">
-      <ion-button size="small" slot="end">Comparar</ion-button>
+      <ion-button size="small" slot="end" @click="addProduct">Comparar</ion-button>
     </ion-item>
   </ion-card>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useListStore } from "@/store/list";
+import { useCatalogStore } from "@/store/catalog";
 import {
   IonItem,
   IonCard,
@@ -40,17 +45,25 @@ export default defineComponent({
     IonCardContent,
     IonCardSubtitle,
   },
-  props: {
-    productId: Number,
-    supermarket: String,
-    name: String,
-    imageUrl: String,
-    price: Number
-  },
+  props: [
+    "productId", "supermarket", "name", "imageUrl", "price",
+  ],
   setup() {
     const router = useRouter();
-    return { router };
+    const list = useListStore();
+    const catalog = useCatalogStore();
+    return {
+      router,
+      list,
+      catalog
+    };
   },
+  methods: {
+    addProduct() {
+      const prod = this.catalog.getProduct(this.$props.productId, this.$props.supermarket);
+      this.list.addProduct(prod);
+    }
+  }
 });
 </script>
 
