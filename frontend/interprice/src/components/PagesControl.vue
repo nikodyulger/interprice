@@ -6,10 +6,8 @@
     <ion-title>
       <ion-chip>
         <ion-label>Página</ion-label>
-        <ion-select value="1" interface="action-sheet">
-          <ion-select-option>1</ion-select-option>
-          <ion-select-option>2</ion-select-option>
-          <ion-select-option>3</ion-select-option>
+        <ion-select :value="store.currentPage" interface="action-sheet" @ionChange="changePage">
+          <ion-select-option v-for="p in store.pages" :value="p" :key="p">{{ p }}</ion-select-option>
         </ion-select>
       </ion-chip>
     </ion-title>
@@ -21,6 +19,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { useCatalogStore } from "@/store/catalog";
 import { arrowBackOutline, arrowForwardOutline } from "ionicons/icons";
 import {
   IonButton,
@@ -34,7 +33,9 @@ import {
 export default defineComponent({
   name: "PagesControl",
   setup() {
+    const store = useCatalogStore()
     return {
+      store,
       arrowBackOutline,
       arrowForwardOutline,
     };
@@ -50,11 +51,14 @@ export default defineComponent({
   },
   methods: {
     previousPage() {
-      alert("previousPage");
+      this.store.previousPage();
     },
     nextPage() {
-      alert("nextPage");
+      this.store.nextPage();
     },
+    changePage(event: any) {
+      this.store.changePage(event.detail.value);
+    }
   },
 });
 </script>
