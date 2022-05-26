@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
@@ -28,7 +29,8 @@ import filters from './helpers/filters';
 
 const app = createApp(App)
 .use(IonicVue)
-.use(router);
+.use(router)
+.use(createPinia());
 
 /* Global Helpers */
 app.config.globalProperties.$filters = filters;
