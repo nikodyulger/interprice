@@ -9,9 +9,8 @@ class API {
     return api.get(`/details/${supermarket}/${productId}`);
   }
 
-  async getFilteredProducts(data: any): Promise<any> {
-    const params = new URLSearchParams(data);
-    return api.get("/products/filters/", {params: params});
+  async getSearchedProducts(q: string): Promise<any> {
+    return api.get(`/products/search/?q=${q}`);
   }
 }
 
