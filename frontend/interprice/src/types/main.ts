@@ -5,7 +5,6 @@ export interface Product {
     category: string;
     image_url: string;
     image_url_s3: string;
-    price: number;
     prices: any;
     details: any;
 }
