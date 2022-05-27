@@ -38,6 +38,7 @@
 import { defineComponent } from "vue";
 import {
   IonPage,
+  IonContent,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -62,6 +63,7 @@ export default defineComponent({
   props: ["supermarket", "productId"],
   components: {
     IonPage,
+    IonContent,
     IonCard,
     IonCardContent,
     IonCardHeader,
