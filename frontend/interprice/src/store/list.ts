@@ -11,14 +11,26 @@ export const useListStore = defineStore({
     getters:{
         numItems(): number {
             return this.products.length;
+        },
+        isInList: (state) => {
+            return (product: Product) => {
+                return state.products.indexOf(product) === -1 ? false : true;
+            }
         }
     },
     actions: {
         addProduct(product: any){
-            this.products.push(product);
+            if(!this.isInList(product))
+                this.products.push(product);
+        },
+        deleteProduct(product: any){
+            const index = this.products.indexOf(product);
+            this.products.splice(index,1);
+        },
+        deleteAll(){
+            this.products = [];
         },
         showList(){
-            console.log(this.show)
             this.show = true;
         },
         hideList(){
