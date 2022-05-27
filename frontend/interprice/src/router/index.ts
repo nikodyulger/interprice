@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import Home from '../views/Home.vue'
-import ProductDetails from '../views/ProductDetails.vue'
+import Home from '../views/Home.vue';
+import ProductDetails from '../views/ProductDetails.vue';
+import Cart from '../views/Cart.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,9 +12,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/:supermarket/:productId',
-    name: "ProductDetails",
+    name: 'ProductDetails',
     component: ProductDetails,
     props: true
+  },
+  {
+    path: '/cart',
+    name: 'Cart',
+    component: Cart
   }
 ]
 
