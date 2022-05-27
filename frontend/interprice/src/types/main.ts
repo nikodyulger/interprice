@@ -8,3 +8,7 @@ export interface Product {
     prices: any;
     details: any;
 }
+
+export interface Cart {
+    [key: string]: Product[];
+}
