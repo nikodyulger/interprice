@@ -29,6 +29,7 @@ import {
   IonIcon,
   IonSelect,
   IonSelectOption,
+  IonTitle
 } from "@ionic/vue";
 export default defineComponent({
   name: "PagesControl",
@@ -48,6 +49,7 @@ export default defineComponent({
     IonIcon,
     IonSelect,
     IonSelectOption,
+    IonTitle
   },
   methods: {
     previousPage() {

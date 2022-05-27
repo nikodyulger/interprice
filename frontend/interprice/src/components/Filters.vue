@@ -31,7 +31,7 @@
             <ion-col>
               <ion-item style="height: 100%">
                 <ion-label>Precio</ion-label>
-                <ion-range dual-knobs pin color="tertiary" min="0" max="30" @ionChange="priceChanged">
+                <ion-range dual-knobs pin color="tertiary" min="0" max="30" @onChange="priceChanged">
                   <ion-icon slot="start" size="small" :icon="cashOutline"></ion-icon>
                   <ion-icon slot="end" :icon="cashOutline"></ion-icon>
                 </ion-range>
@@ -57,24 +57,36 @@
 import { defineComponent } from "vue";
 import { useCatalogStore } from "@/store/catalog";
 import {
+  IonGrid,
+  IonRow,
+  IonCol,
   IonSearchbar,
   IonToolbar,
   IonItem,
   IonLabel,
   IonSelect,
   IonSelectOption,
+  IonRange,
+  IonIcon,
+  IonText
 } from "@ionic/vue";
 
 import { cashOutline } from "ionicons/icons";
 
 export default defineComponent({
   components: {
+    IonGrid,
+    IonRow,
+    IonCol,
     IonSearchbar,
     IonToolbar,
     IonItem,
     IonLabel,
     IonSelect,
     IonSelectOption,
+    IonRange,
+    IonIcon,
+    IonText
   },
   data() {
     return {
@@ -104,10 +116,24 @@ export default defineComponent({
   },
   methods: {
     supermarketChanged(event: any) {
-      console.log(event)
+      this.supermarkets = event.detail.value;
+      const filters = {
+        supermarket: this.supermarkets,
+        category: this.categories,
+        prices: []
+      }
+      console.log(filters)
+      this.store.filterByCategory(filters)
     },
     categoryChanged(event: any) {
-      console.log(event)
+      this.categories = event.detail.value;
+      const filters = {
+        supermarket: this.supermarkets,
+        category: this.categories,
+        prices: []
+      }
+      console.log(filters)
+      this.store.filterByCategory(filters)
     },
     priceChanged(event: any) {
       console.log(event)
