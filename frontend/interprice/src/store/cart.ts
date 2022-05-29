@@ -32,7 +32,7 @@ export const useCartStore = defineStore({
     addProduct(product: any) {
       const supermarket = product.supermarket;
       this.hasSupermarket(supermarket) ? this.shoppingLists[supermarket].push(product) : (this.shoppingLists[supermarket] = [product])
-      console.log(this.shoppingLists);
+      return true
     },
   },
 });

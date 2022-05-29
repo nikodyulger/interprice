@@ -20,8 +20,11 @@ export const useListStore = defineStore({
     },
     actions: {
         addProduct(product: any){
-            if(!this.isInList(product))
+            if(!this.isInList(product)){
                 this.products.push(product);
+                return true;
+            }
+            return false;
         },
         deleteProduct(product: any){
             const index = this.products.indexOf(product);
