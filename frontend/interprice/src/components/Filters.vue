@@ -1,8 +1,8 @@
 <template>
   <ion-grid>
     <ion-row>
-      <ion-searchbar color="light" enterkeyhint="enter" inputmode="search" type="search" @search="getSearchedProducts"
-        v-model="search" placeholder="Busca productos" search-icon="search-outline" animated></ion-searchbar>
+      <ion-searchbar color="light" enterkeyhint="search" inputmode="search" type="search" @search="getSearchedProducts"
+        v-model="search" placeholder="Busca productos" search-icon="search-outline" animated clearIcon="close-sharp"></ion-searchbar>
     </ion-row>
     <ion-row>
       <ion-toolbar>
@@ -31,7 +31,8 @@
             <ion-col>
               <ion-item style="height: 100%">
                 <ion-label>Precio</ion-label>
-                <ion-range dual-knobs pin color="tertiary" min="0" max="30" @onChange="priceChanged">
+                <ion-range dual-knobs pin color="tertiary" min="0" max="20" debounce="150" @ionChange="priceChanged"
+                  :value="{ lower: 0, upper: 20 }">
                   <ion-icon slot="start" size="small" :icon="cashOutline"></ion-icon>
                   <ion-icon slot="end" :icon="cashOutline"></ion-icon>
                 </ion-range>
@@ -45,9 +46,9 @@
       <ion-col pull="1">
         <ion-text>Ordenar por: </ion-text>
 
-        <ion-text color="primary" @click="orderBy('name')"><span>A-Z</span></ion-text>
+        <ion-text color="primary" @click="orderBy('name')"><span :class="{ highlight: order === 'name'}">A-Z</span></ion-text>
         |
-        <ion-text color="primary" @click="orderBy('price')"><span>Precio</span></ion-text>
+        <ion-text color="primary" @click="orderBy('price')"><span :class="{ highlight: order === 'price'}">Precio</span></ion-text>
       </ion-col>
     </ion-row>
   </ion-grid>
@@ -90,58 +91,54 @@ export default defineComponent({
   },
   data() {
     return {
-      supermarkets: [],
-      categories: [],
-      prices: [],
-      search: ""
+      filters: {
+        supermarkets: [],
+        categories: [],
+        price: { lower: 0, upper: 20 },
+      },
+      search: "",
+      order: ""
     }
   },
   setup() {
     const store = useCatalogStore();
 
-    const orderBy = (v: string) => {
-      console.log(v)
-      if (v === 'price') {
-        store.orderByPrice();
-      } else {
-        store.orderByName();
-      }
-    };
-
     return {
       cashOutline,
-      store,
-      orderBy
+      store
     };
   },
   methods: {
-    supermarketChanged(event: any) {
-      this.supermarkets = event.detail.value;
-      const filters = {
-        supermarket: this.supermarkets,
-        category: this.categories,
-        prices: []
+    orderBy(v: string) {
+      console.log(v)
+      if (v === 'price') {
+        this.store.orderByPrice();
+        this.order = v;
+      } else {
+        this.store.orderByName();
+        this.order = v;
       }
-      console.log(filters)
-      this.store.filterByCategory(filters)
+    },
+    supermarketChanged(event: any) {
+      this.filters.supermarkets = event.detail.value;
+      this.store.filterProducts(this.filters);
+      this.store.getCatalog();
     },
     categoryChanged(event: any) {
-      this.categories = event.detail.value;
-      const filters = {
-        supermarket: this.supermarkets,
-        category: this.categories,
-        prices: []
-      }
-      console.log(filters)
-      this.store.filterByCategory(filters)
+      this.filters.categories = event.detail.value;
+      this.store.filterProducts(this.filters);
+      this.store.getCatalog();
     },
     priceChanged(event: any) {
-      console.log(event)
+      this.filters.price = event.detail.value;
+      // console.log(event)
+      console.log(this.filters.price)
+      this.store.filterProducts(this.filters);
+      this.store.getCatalog();
     },
     getSearchedProducts(event: Event) {
-      console.log(event);
       console.log(this.search);
-      this.store.getSearchedProducts(this.search)
+      this.store.getSearchedProducts(this.search);
     },
   }
 });
@@ -149,10 +146,11 @@ export default defineComponent({
 
 <style scoped>
 ion-range {
-  --height: 1rem;
+  --height: 30px;
 }
 
-.order span {
+.highlight {
+  font-weight: bold;
   display: inline-block;
   border-bottom: 2px solid;
   padding-bottom: 2px;
