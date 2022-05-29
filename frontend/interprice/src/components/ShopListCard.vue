@@ -14,6 +14,9 @@
                     </ion-label>
                     <ion-note slot="end">{{ $filters.currency(p.prices[0].price) }}</ion-note>
                 </ion-item>
+                <ion-item>
+                    <ion-label slot="end"><strong>Total: </strong>{{$filters.currency(totalShoppingList)}}</ion-label>
+                </ion-item>
             </ion-list>
             <ion-grid>
                 <ion-row>
@@ -31,13 +34,12 @@
                     </ion-col>
                 </ion-row>
             </ion-grid>
-            <section>
-            </section>
         </ion-card-content>
     </ion-card>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Product } from "../types/main";
 import {
     IonCard,
     IonCardContent,
@@ -88,6 +90,16 @@ export default defineComponent({
             const cb = navigator.clipboard;
             cb.writeText(JSON.stringify(this.products)).then(() => alert('Texto copiado!'));
         }
+    },
+    computed: {
+        totalShoppingList() {
+            return this.products.reduce((acc: number, p: Product) => acc + p.prices[0].price, 0);
+        },
     }
 });
 </script>
+<style scoped>
+ion-note {
+    font-size: small;
+}
+</style>
