@@ -2,7 +2,7 @@
   <ion-header class="ion-no-border">
     <ion-toolbar color="tertiary">
       <ion-title slot="start">
-        <ion-text @click="() => router.push('/')">Interprice</ion-text>
+        <ion-text @click="() => $route.name === 'Home' ? router.go(0) : router.push('/')">Interprice</ion-text>
       </ion-title>
       <ion-buttons slot="end" class="ion-margin-end">
         <ion-button size="large" shape="round" fill="clear" @click="() => router.push('/cart')">
@@ -40,7 +40,7 @@ export default defineComponent({
     IonButtons,
     IonButton,
     IonBadge,
-    IonIcon
+    IonIcon,
   },
   data() {
     return {
