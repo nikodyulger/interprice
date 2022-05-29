@@ -3,6 +3,7 @@ import { RouteRecordRaw } from 'vue-router';
 import Home from '../views/Home.vue';
 import ProductDetails from '../views/ProductDetails.vue';
 import Cart from '../views/Cart.vue';
+import PageNotFound from '../views/PageNotFound.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +21,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/cart',
     name: 'Cart',
     component: Cart
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'PageNotFound',
+    component: PageNotFound
   }
 ]
 
