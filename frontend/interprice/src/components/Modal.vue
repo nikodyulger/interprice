@@ -16,22 +16,26 @@
                 <ion-list-header>
                     <ion-label><strong>Comparativa</strong></ion-label>
                 </ion-list-header>
-                <ion-item v-for="p in list.products" :key="p.product_id">
-                    <ion-thumbnail class="ion-margin">
-                        <ion-img :src="p.image_url_s3"></ion-img>
-                    </ion-thumbnail>
-                    <ion-label>
-                        <h2>{{ p.name }}</h2>
-                        <h3>{{ p.supermarket }}</h3>
-                        <p>{{ $filters.currency(p.prices[0].price) }}</p>
-                    </ion-label>
-                    <ion-button color="success" shape="round" @click="addProduct(p)">
-                        <ion-icon slot="icon-only" :icon="checkmarkCircleOutline"></ion-icon>
-                    </ion-button>
-                    <ion-button color="danger" shape="round" @click="list.deleteProduct(p)">
-                        <ion-icon slot="icon-only" :icon="closeCircleOutline"></ion-icon>
-                    </ion-button>
-                </ion-item>
+                <ion-reorder-group :disabled="false" @ionItemReorder="reorderProducts($event)">
+                    <ion-reorder v-for="p in list.products" :key="p.product_id">
+                        <ion-item>
+                            <ion-thumbnail class="ion-margin">
+                                <ion-img :src="p.image_url_s3"></ion-img>
+                            </ion-thumbnail>
+                            <ion-label>
+                                <h2>{{ p.name }}</h2>
+                                <h3>{{ p.supermarket }}</h3>
+                                <p>{{ $filters.currency(p.prices[0].price) }}</p>
+                            </ion-label>
+                            <ion-button color="success" shape="round" @click="addProduct(p)">
+                                <ion-icon slot="icon-only" :icon="checkmarkCircleOutline"></ion-icon>
+                            </ion-button>
+                            <ion-button color="danger" shape="round" @click="list.deleteProduct(p)">
+                                <ion-icon slot="icon-only" :icon="closeCircleOutline"></ion-icon>
+                            </ion-button>
+                        </ion-item>
+                    </ion-reorder>
+                </ion-reorder-group>
             </ion-list>
             <section class="ion-padding ion-text-center" v-if="list.products.length > 0">
                 <ion-button color="danger" fill="outline" @click="list.deleteAll()">
@@ -94,10 +98,13 @@ export default defineComponent({
             trashOutline
         }
     },
-    methods:{
+    methods: {
         addProduct(product: any) {
             this.cart.addProduct(product);
             this.list.deleteProduct(product);
+        },
+        reorderProducts(event: any) {
+            event.detail.complete()
         }
     }
 });
