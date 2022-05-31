@@ -46,3 +46,11 @@ class ProductDetails(Product):
 
     class Config:
         orm_mode = True
+
+class SMS(BaseModel):
+    number: str
+    message: str
+
+class verifySMS(BaseModel):
+    number: str
+    password: str
