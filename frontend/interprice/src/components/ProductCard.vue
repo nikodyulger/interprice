@@ -2,7 +2,7 @@
   <ion-card class="ion-text-center">
     <img
       @click="() => router.push({ name: 'ProductDetails', params: { supermarket: product.supermarket, productId: product.product_id } })"
-      :src=product.image_url height="150" width="150" />
+      :src=product.image_url_s3 height="150" width="150" />
     <ion-card-header class="ion-text-start" button
       router-link="{ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId}}">
       <ion-card-subtitle>
@@ -21,12 +21,12 @@
       <ion-row class="ion-justify-content-around">
         <ion-col size-sm="4" size="4">
           <ion-button size="small" expand="block" shape="round" color="success"
-            @click="cart.addProduct(product) && toastProduct('Producto añadido a la cesta')">
+            @click="!cart.isInShopList(product) && cart.addProduct(product) && toastProduct('Producto añadido a la cesta')">
             <ion-icon slot="icon-only" :icon="bagAdd"></ion-icon>
           </ion-button>
         </ion-col>
         <ion-col size-sm="6" size="6" class="ion-text-center">
-          <ion-button size="small" expand="block" @click="list.addProduct(product) && toastProduct('Producto añadido para comparar')">Comparar
+          <ion-button size="small" expand="block" @click=" list.addProduct(product) && toastProduct('Producto añadido para comparar')">Comparar
           </ion-button>
         </ion-col>
       </ion-row>
