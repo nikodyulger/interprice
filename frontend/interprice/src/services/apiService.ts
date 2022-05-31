@@ -9,8 +9,16 @@ class API {
     return api.get(`/details/${supermarket}/${productId}`);
   }
 
-  async getSearchedProducts(q: string): Promise<any> {
+  getSearchedProducts(q: string): Promise<any> {
     return api.get(`/products/search/?q=${q}`);
+  }
+
+  sendSMS(sms: any) {
+    return api.post('/sendsms',sms);
+  }
+
+  verifyPhone(verifySMS: any){
+    return api.post('/verifyphone', verifySMS)
   }
 }
 
