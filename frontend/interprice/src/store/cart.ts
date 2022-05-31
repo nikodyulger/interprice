@@ -24,7 +24,9 @@ export const useCartStore = defineStore({
     },
     isInShopList: (state) => {
         return (product: any) => {
-            return state.shoppingLists[product.supermarket].indexOf(product) === -1 ? false : true;
+            if(Object.keys(state.shoppingLists).length > 0 && product.supermarket in state.shoppingLists)
+              return state.shoppingLists[product.supermarket].indexOf(product) === -1 ? false : true;
+            return false;
         }
     }
   },
