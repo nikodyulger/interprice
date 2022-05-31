@@ -4,6 +4,7 @@ from ..items import ProductItem
 from datetime import datetime 
 import json
 import requests
+import time
 
 
 class consumSpider(Spider):
@@ -60,5 +61,6 @@ class consumSpider(Spider):
                               last_updated=datetime.today().strftime('%Y-%m-%d'))
 
     def closed(self, reason):
+        time.sleep(10)
         if reason == 'finished':
             requests.get('https://lqt7l5fcxpnnmiv5lkgy3judc40lnxbo.lambda-url.us-east-1.on.aws/?key=%(name)s_%(time)s')

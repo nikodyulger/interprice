@@ -4,6 +4,7 @@ from datetime import datetime
 from w3lib.html import remove_tags
 import re
 import requests
+import time
 
 
 class diaSpider(Spider):
@@ -126,5 +127,6 @@ class diaSpider(Spider):
                           last_updated=datetime.today().strftime('%Y-%m-%d'))
 
     def closed(self, reason):
+        time.sleep(10)
         if reason == 'finished':
             requests.get('https://lqt7l5fcxpnnmiv5lkgy3judc40lnxbo.lambda-url.us-east-1.on.aws/?key=%(name)s_%(time)s')
