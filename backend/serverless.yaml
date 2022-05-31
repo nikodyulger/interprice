@@ -37,6 +37,7 @@ functions:
       - http: 
           method: any
           path: /{proxy+}
+    cors: true
     vpc:
       securityGroupIds:
         - ${env:SEC_GROUP_ID}

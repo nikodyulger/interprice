@@ -1,6 +1,7 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from mangum import Mangum
-from app.routers import products, categories
+from app.routers import products, categories, sms
 import os
 
 STAGE = os.environ['STAGE']
@@ -11,8 +12,17 @@ app = FastAPI(
     root_path=root_path
 )
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(products.router, tags=["Products"])
 app.include_router(categories.router, tags=['Categories'])
+app.include_router(sms.router, tags=["SMS"])
 
 @app.get('/')
 async def root():
