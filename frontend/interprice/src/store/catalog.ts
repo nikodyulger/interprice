@@ -8,11 +8,13 @@ export const useCatalogStore = defineStore({
     products: [] as Product[],
     filteredProducts: [] as Product[],
     catalog: [[]] as Product[][],
-    currentPage: 1
+    currentPage: 1,
   }),
   getters: {
     pages(): number {
-      return Math.ceil(this.products.length / 30);
+      return this.filteredProducts.length > 0
+        ? Math.ceil(this.filteredProducts.length / 30)
+        : Math.ceil(this.products.length / 30);
     },
     getProduct: (state) => {
       return (productId: number, supermarket: string) => {
@@ -25,7 +27,7 @@ export const useCatalogStore = defineStore({
       return (filters: any) => {
         state.catalog = [[]];
 
-        const prod = state.products.filter((p) => {
+        const prods = state.products.filter((p) => {
           let res = true;
 
           if (filters.categories.length > 0)
@@ -34,40 +36,46 @@ export const useCatalogStore = defineStore({
           if (filters.supermarkets.length > 0)
             res = res && filters.supermarkets.includes(p.supermarket);
 
-          res =
-            res &&
-            filters.price.lower <= p.prices[0].price &&
-            p.prices[0].price <= filters.price.upper;
+          if (Object.keys(filters.price).length === 2)
+            res =
+              res &&
+              filters.price.lower <= p.prices[0].price &&
+              p.prices[0].price <= filters.price.upper;
 
           return res;
         });
 
-        for (let i = 0; i < prod.length; i += 6) {
-          state.catalog.push(prod.slice(i, i + 6));
+        for (let i = 0; i < prods.length; i += 5) {
+          state.catalog.push(prods.slice(i, i + 5));
         }
 
-        state.filteredProducts = prod;
+        state.filteredProducts = prods;
         state.currentPage = 1;
       };
     },
   },
   actions: {
     orderByPrice() {
-      this.products.sort((a, b) =>
-        a.prices[0].price < b.prices[0].price ? -1 : 1
-      );
+      this.filteredProducts.length > 0
+        ? this.filteredProducts.sort((a, b) =>
+            a.prices[0].price < b.prices[0].price ? -1 : 1
+          )
+        : this.products.sort((a, b) =>
+            a.prices[0].price < b.prices[0].price ? -1 : 1
+          );
       this.currentPage = 1;
       this.getCatalog();
     },
     orderByName() {
-      this.products.sort((a, b) => (a.name < b.name ? -1 : 1));
+      this.filteredProducts.length > 0
+        ? this.filteredProducts.sort((a, b) => (a.name < b.name ? -1 : 1))
+        : this.products.sort((a, b) => (a.name < b.name ? -1 : 1));
       this.currentPage = 1;
       this.getCatalog();
     },
     getCatalog() {
       this.catalog = [[]];
       let prods = [];
-      console.log(this.filteredProducts.length)
       this.filteredProducts.length > 0
         ? (prods = this.filteredProducts.slice(
             (this.currentPage - 1) * 30,
@@ -83,12 +91,12 @@ export const useCatalogStore = defineStore({
       }
     },
     nextPage() {
-      if(this.currentPage !== this.pages) (this.currentPage += 1) ;
+      if (this.currentPage !== this.pages) this.currentPage += 1;
       this.getCatalog();
     },
     previousPage() {
-      if(this.currentPage !== 1) (this.currentPage -= 1);
-      this.getCatalog(); 
+      if (this.currentPage !== 1) this.currentPage -= 1;
+      this.getCatalog();
     },
     changePage(page: number) {
       this.currentPage = page;
