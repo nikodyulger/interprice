@@ -2,8 +2,13 @@
     <div>
         <ion-header>
             <ion-toolbar>
+                <ion-item slot="start" lines="none">
+                    <ion-icon :color="reorder ? 'dark' : 'tertiary'" :icon="reorderFourOutline"></ion-icon>
+                    <ion-toggle color="tertiary" @click="toggleReorder"></ion-toggle>
+                </ion-item>
                 <ion-title>Lista</ion-title>
                 <ion-buttons slot="end">
+
                     <ion-button size="large" shape="round" @click="list.hideList">
                         <ion-icon slot="icon-only" :icon="closeOutline"></ion-icon>
                     </ion-button>
@@ -16,7 +21,7 @@
                 <ion-list-header>
                     <ion-label><strong>Comparativa</strong></ion-label>
                 </ion-list-header>
-                <ion-reorder-group :disabled="false" @ionItemReorder="reorderProducts($event)">
+                <ion-reorder-group :disabled="reorder" @ionItemReorder="reorderProducts($event)">
                     <ion-reorder v-for="p in list.products" :key="p.product_id">
                         <ion-item>
                             <ion-thumbnail class="ion-margin">
@@ -30,7 +35,7 @@
                             <ion-button color="success" shape="round" @click="addProduct(p)">
                                 <ion-icon slot="icon-only" :icon="checkmarkCircleOutline"></ion-icon>
                             </ion-button>
-                            <ion-button color="danger" shape="round" @click="list.deleteProduct(p)">
+                            <ion-button color="danger" shape="round" @click="deleteProduct(p)">
                                 <ion-icon slot="icon-only" :icon="closeCircleOutline"></ion-icon>
                             </ion-button>
                         </ion-item>
@@ -51,6 +56,7 @@
 import { defineComponent } from "vue";
 import { useListStore } from "@/store/list";
 import { useCartStore } from "@/store/cart";
+
 import {
     IonHeader,
     IonTitle,
@@ -65,9 +71,14 @@ import {
     IonItem,
     IonThumbnail,
     IonImg,
-    IonText
+    IonText,
+    IonReorder,
+    IonReorderGroup,
+    IonToggle,
+    toastController
 } from "@ionic/vue";
-import { closeOutline, checkmarkCircleOutline, closeCircleOutline, trashOutline } from "ionicons/icons";
+
+import { closeOutline, checkmarkCircleOutline, closeCircleOutline, trashOutline, reorderFourOutline } from "ionicons/icons";
 export default defineComponent({
     name: "Modal",
     components: {
@@ -84,7 +95,15 @@ export default defineComponent({
         IonItem,
         IonThumbnail,
         IonImg,
-        IonText
+        IonText,
+        IonReorder,
+        IonReorderGroup,
+        IonToggle
+    },
+    data() {
+        return {
+            reorder: true
+        }
     },
     setup() {
         const list = useListStore();
@@ -95,17 +114,40 @@ export default defineComponent({
             closeOutline,
             checkmarkCircleOutline,
             closeCircleOutline,
-            trashOutline
+            trashOutline,
+            reorderFourOutline
         }
     },
     methods: {
         addProduct(product: any) {
-            this.cart.addProduct(product);
+            if (!this.cart.isInShopList(product)) {
+                this.cart.addProduct(product);
+                this.list.deleteProduct(product);
+                this.toastProduct('Producto añadido a la cesta', 'tertiary');
+            }
+        },
+        deleteProduct(product: any) {
             this.list.deleteProduct(product);
+            this.toastProduct('Producto descartado', 'danger');
         },
         reorderProducts(event: any) {
             event.detail.complete()
-        }
+        },
+        toggleReorder() {
+            console.log(this.reorder);
+            this.reorder = !this.reorder;
+            console.log(this.reorder);
+        },
+        async toastProduct(message: string, color: string) {
+            const toast = await toastController
+                .create({
+                    message: message,
+                    duration: 500,
+                    color: color,
+                    position: 'bottom'
+                })
+            return toast.present();
+        },
     }
 });
 </script>
