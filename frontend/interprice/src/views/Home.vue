@@ -4,7 +4,7 @@
       <Header />
       <br />
       <ion-content fullscreen class="ion-padding">
-        <ion-loading :is-open="loading" message="Por favor, espere ..."/>
+        <ion-loading :is-open="loading" message="Por favor, espere ..." />
         <Filters />
         <ion-grid>
           <ion-row v-for="row in catalog.catalog" :key="row" class="ion-justify-content-center">
@@ -19,7 +19,7 @@
         </ion-modal>
         <br />
         <PagesControl />
-        <br/>
+        <br />
         <Footer />
       </ion-content>
     </ion-page>
@@ -27,6 +27,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+import { useCatalogStore } from "@/store/catalog";
+import { useListStore } from "@/store/list";
+import API from "../services/apiService";
+
 import {
   IonPage,
   IonContent,
@@ -44,10 +49,6 @@ import PagesControl from "../components/PagesControl.vue";
 import Fab from "../components/Fab.vue";
 import Modal from "../components/Modal.vue";
 import Footer from "../components/Footer.vue";
-import { defineComponent } from "vue";
-import { useCatalogStore } from "@/store/catalog";
-import { useListStore } from "@/store/list";
-import API from "../services/apiService";
 
 export default defineComponent({
   name: "Home",
@@ -81,7 +82,6 @@ export default defineComponent({
         .then((res) => {
           this.catalog.products = res.data;
           this.catalog.getCatalog();
-          console.log(res);
         })
         .catch((err) => console.log(err));
     }
@@ -107,5 +107,4 @@ ion-card {
 ion-page {
   margin-bottom: 40px;
 }
-
 </style>

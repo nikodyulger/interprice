@@ -13,8 +13,9 @@
 </template>
 
 <script lang="ts">
-import { IonItem, IonLabel, IonThumbnail, IonImg } from "@ionic/vue";
 import { defineComponent } from "vue";
+
+import { IonItem, IonLabel, IonThumbnail, IonImg } from "@ionic/vue";
 
 export default defineComponent({
   name: "PromoListItem",

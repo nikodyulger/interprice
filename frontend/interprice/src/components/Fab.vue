@@ -11,12 +11,14 @@
 import { defineComponent } from 'vue';
 import { useListStore } from "@/store/list";
 import { listOutline } from "ionicons/icons";
+
 import {
     IonBadge,
     IonFab,
     IonFabButton,
     IonIcon,
 } from '@ionic/vue';
+
 export default defineComponent({
     name: "Fab",
     components: {

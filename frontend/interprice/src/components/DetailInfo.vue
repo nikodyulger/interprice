@@ -48,6 +48,8 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from 'vue';
+
 import {
     IonCard,
     IonCardContent,
@@ -61,7 +63,6 @@ import {
     IonText,
     IonList,
 } from "@ionic/vue";
-import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "Breadcrumbs",

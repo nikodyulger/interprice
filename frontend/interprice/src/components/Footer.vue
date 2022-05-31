@@ -12,7 +12,6 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { logoGithub } from "ionicons/icons";
 import {
     IonFooter,
     IonToolbar,
@@ -21,6 +20,8 @@ import {
     IonTitle,
     IonIcon
 } from "@ionic/vue";
+
+import { logoGithub } from "ionicons/icons";
 
 export default defineComponent({
     name: "Footer",

@@ -6,7 +6,7 @@
       </ion-title>
       <ion-buttons slot="end" class="ion-margin-end">
         <ion-button size="large" shape="round" fill="clear" @click="() => router.push('/cart')">
-          <ion-badge v-if="!cart.isEmpty" color="danger" class="badge">{{cart.totalProducts}}</ion-badge>
+          <ion-badge v-if="!cart.isEmpty" color="danger" class="badge">{{ cart.totalProducts }}</ion-badge>
           <ion-icon slot="icon-only" :icon="cartOutline">
           </ion-icon>
         </ion-button>
@@ -16,6 +16,10 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import { useCartStore } from "@/store/cart";
+
 import {
   IonHeader,
   IonToolbar,
@@ -26,10 +30,8 @@ import {
   IonBadge,
   IonIcon
 } from "@ionic/vue";
+
 import { cartOutline } from "ionicons/icons";
-import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
-import { useCartStore } from "@/store/cart";
 
 export default defineComponent({
   components: {
@@ -67,7 +69,8 @@ ion-button ion-badge {
   opacity: 0.9;
   font-size: small;
 }
-ion-toolbar{
+
+ion-toolbar {
   --min-height: 50px;
 }
 </style>
