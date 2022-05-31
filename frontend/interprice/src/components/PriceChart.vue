@@ -1,5 +1,27 @@
+<template>
+  <ion-card class="ion-padding" style="height: 100%;">
+    <ion-card-header>
+      <ion-card-title>
+        <ion-text>Histórico de precios</ion-text>
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <Line :chart-data="chartData" :chart-options="chartOptions" :height="200" />
+    </ion-card-content>
+  </ion-card>
+</template>
+
 <script lang="ts">
-import { defineComponent, h } from "vue";
+import { defineComponent } from "vue";
+
+import {
+  IonCard,
+  IonCardHeader,
+  IonCardContent,
+  IonCardTitle,
+  IonText
+} from "@ionic/vue";
+
 import { Line } from "vue-chartjs";
 import {
   Chart as ChartJS,
@@ -24,40 +46,43 @@ export default defineComponent({
   name: "PriceChart",
   components: {
     Line,
+    IonCard,
+    IonCardHeader,
+    IonCardContent,
+    IonCardTitle,
+    IonText
   },
-  props: {
-    width: {
-      type: Number,
-      default: 400,
+  props: ["prices"],
+  computed: {
+    labels() {
+      return this.prices.map((p: any) => p.updated);
     },
-    height: {
-      type: Number,
-      default: 400,
+    data() {
+      return this.prices.map((p: any) => p.price);
     },
+    chartData() {
+      return {
+        labels: this.labels,
+        datasets: [
+          {
+            backgroundColor: '#5260ff',
+            fill: true,
+            tension: 0.2,
+            data: this.data
+          }
+        ]
+      }
+    }
   },
-  setup(props) {
-    const chartData = {
-      labels: ["January", "February", "March", "April", "May", "June", "July"],
-      datasets: [
-        {
-          backgroundColor: "#f87979",
-          data: [40, 39, 10, 40, 39, 80, 40],
-        },
-      ],
-    };
-
+  setup() {
     const chartOptions = {
       responsive: true,
       maintainAspectRatio: false,
     };
-    
-    return () =>
-      h(Line, {
-        chartData,
-        chartOptions,
-        width: props.width,
-        height: props.height
-      });
+
+    return {
+      chartOptions
+    }
   },
 });
 </script>
