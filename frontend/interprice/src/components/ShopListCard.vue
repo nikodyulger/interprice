@@ -93,49 +93,15 @@ export default defineComponent({
         copyToClipboard() {
             const cb = navigator.clipboard;
             cb.writeText(this.textMessage)
-                .then(() => this.toastProduct('Texto copiado!', 'tertiary'));
+                .then(() => this.toastMessage('Texto copiado!', 'tertiary'));
         },
         sendSMS(phoneNumber: number, message: string) {
             return API.sendSMS({
                 number: `+34${phoneNumber}`,
                 message: message
             }).then((res) => {
-                res.data === 'Verified' ? this.toastProduct('Mensaje SMS enviado!', 'tertiary') : this.verifyTel(phoneNumber);
+                res.data === 'Verified' ? this.toastMessage('Mensaje SMS enviado!', 'tertiary') : this.toastMessage('Tu número no está verificado!', 'danger');
             });
-        },
-        sendVerify(phoneNumber: number, password: string) {
-            return API.verifyPhone({
-                number: `+34${phoneNumber}`,
-                password: password
-            }).then((res) => { console.log(res); this.sendSMS(phoneNumber, this.textMessage) })
-        },
-        async verifyTel(phoneNumber: number) {
-            const alert = await alertController.create({
-                header: "Verificar SMS",
-                message: "Introduce código de verificación",
-                inputs: [
-                    {
-                        name: 'password',
-                        type: 'number',
-                        placeholder: 'Código'
-                    }],
-                buttons: [
-                    {
-                        text: 'Cancelar',
-                        role: 'cancel',
-                        cssClass: 'secondary',
-                        handler: () => {
-                            this.toastProduct('Operación cancelada!','danger');
-                        }
-                    }, {
-                        text: 'Ok',
-                        handler: (inputs) => {
-                            this.sendVerify(phoneNumber, inputs.password)
-                        }
-                    }
-                ]
-            });
-            await alert.present();
         },
         async alertSendSMS() {
             const alert = await alertController.create({
@@ -153,7 +119,7 @@ export default defineComponent({
                         role: 'cancel',
                         cssClass: 'secondary',
                         handler: () => {
-                           this.toastProduct('Operación cancelada!','danger');
+                           this.toastMessage('Operación cancelada!','danger');
                         }
                     }, {
                         text: 'Ok',
@@ -165,7 +131,7 @@ export default defineComponent({
             });
             await alert.present();
         },
-        async toastProduct(message: string, color: string) {
+        async toastMessage(message: string, color: string) {
             const toast = await toastController
                 .create({
                     message: message,
