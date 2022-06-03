@@ -15,9 +15,8 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-type", "Access-Control-Allow-Origin", "Access-Control-Allow-Credentials"],
 )
 
 app.include_router(products.router, tags=["Products"])
