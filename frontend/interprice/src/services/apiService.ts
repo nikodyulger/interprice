@@ -17,9 +17,6 @@ class API {
     return api.post('/sendsms',sms);
   }
 
-  verifyPhone(verifySMS: any){
-    return api.post('/verifyphone', verifySMS)
-  }
 }
 
 export default new API();
