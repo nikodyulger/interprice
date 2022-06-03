@@ -117,7 +117,6 @@ export default defineComponent({
   },
   methods: {
     orderBy(v: string) {
-      console.log(v)
       if (v === 'price') {
         this.store.orderByPrice();
         this.order = v;
