@@ -30,7 +30,8 @@ import {
   LineElement,
   LinearScale,
   PointElement,
-  CategoryScale
+  CategoryScale,
+  Filler
 } from "chart.js";
 
 ChartJS.register(
@@ -39,7 +40,8 @@ ChartJS.register(
   LineElement,
   LinearScale,
   PointElement,
-  CategoryScale
+  CategoryScale,
+  Filler
 );
 
 export default defineComponent({
@@ -65,7 +67,7 @@ export default defineComponent({
         labels: this.labels,
         datasets: [
           {
-            backgroundColor: '#5260ff',
+            borderColor: '#5260ff',
             fill: true,
             tension: 0.2,
             data: this.data
@@ -77,7 +79,7 @@ export default defineComponent({
   setup() {
     const chartOptions = {
       responsive: true,
-      maintainAspectRatio: false,
+      maintainAspectRatio: false
     };
 
     return {
