@@ -3,8 +3,8 @@
     <img
       @click="() => router.push({ name: 'ProductDetails', params: { supermarket: product.supermarket, productId: product.product_id } })"
       :src=product.image_url_s3 height="150" width="150" />
-    <ion-card-header class="ion-text-start" button
-      router-link="{ name: 'ProductDetails', params: { supermarket: supermarket, productId: productId}}">
+  <router-link :to="{ name: 'ProductDetails', params: { supermarket: product.supermarket, productId: product.product_id}}" style="text-decoration: none;">
+    <ion-card-header class="ion-text-start"> 
       <ion-card-subtitle>
         <ion-text>{{ product.supermarket }}</ion-text>
       </ion-card-subtitle>
@@ -14,6 +14,7 @@
         </ion-text>
       </ion-card-title>
     </ion-card-header>
+    </router-link>
     <ion-card-content class="ion-text-start">
       <ion-text><strong>{{ $filters.currency(product.prices[0].price) }}</strong></ion-text>
     </ion-card-content>
