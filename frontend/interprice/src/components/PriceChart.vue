@@ -57,10 +57,10 @@ export default defineComponent({
   props: ["prices"],
   computed: {
     labels() {
-      return this.prices.map((p: any) => p.updated);
+      return this.prices.map((p: any) => p.updated).reverse();
     },
     data() {
-      return this.prices.map((p: any) => p.price);
+      return this.prices.map((p: any) => p.price).reverse();
     },
     chartData() {
       return {
