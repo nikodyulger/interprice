@@ -20,13 +20,13 @@
     </ion-card-content>
     <ion-grid>
       <ion-row class="ion-justify-content-around">
-        <ion-col size-sm="4" size="4">
+        <ion-col size-sm="4" size="3">
           <ion-button size="small" expand="block" shape="round" color="success"
             @click="!cart.isInShopList(product) && cart.addProduct(product) && toastProduct('Producto añadido a la cesta')">
             <ion-icon slot="icon-only" :icon="bagAdd"></ion-icon>
           </ion-button>
         </ion-col>
-        <ion-col size-sm="6" size="6" class="ion-text-center">
+        <ion-col size="7">
           <ion-button size="small" expand="block" @click=" list.addProduct(product) && toastProduct('Producto añadido para comparar')">Comparar
           </ion-button>
         </ion-col>
