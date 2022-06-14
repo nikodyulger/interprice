@@ -1,6 +1,6 @@
 <template>
   <ion-app>
-    <ion-router-outlet />
+    <ion-router-outlet :key="$route.path" />
   </ion-app>
 </template>
 

@@ -1,4 +1,5 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router';
 
@@ -23,10 +24,17 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
+/* Helpers */
+import filters from './helpers/filters';
+
 const app = createApp(App)
-  .use(IonicVue)
-  .use(router);
-  
+.use(IonicVue)
+.use(router)
+.use(createPinia());
+
+/* Global Helpers */
+app.config.globalProperties.$filters = filters;
+
 router.isReady().then(() => {
   app.mount('#app');
 });
