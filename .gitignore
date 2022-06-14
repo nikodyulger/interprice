@@ -1,6 +1,6 @@
 # Python environments and others files
 .Python
-__pycache__/
+__pycache__
 .env
 env/
 build/
@@ -16,6 +16,15 @@ pip-delete-this-directory.txt
 
 # Logs
 *.log
+
+# Node modules
+node_modules
+
+# Images
+images
+
+# Serverless
+.serverless
 
 # Ionic
 **/.idea

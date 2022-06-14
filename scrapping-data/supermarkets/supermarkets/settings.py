@@ -6,12 +6,14 @@
 #     https://docs.scrapy.org/en/latest/topics/settings.html
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import os
+from os.path import join, dirname
+from dotenv import load_dotenv
 
 BOT_NAME = 'supermarkets'
 
 SPIDER_MODULES = ['supermarkets.spiders']
 NEWSPIDER_MODULE = 'supermarkets.spiders'
-
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36'
@@ -23,22 +25,22 @@ ROBOTSTXT_OBEY = True
 FEED_EXPORT_ENCODING = 'utf-8'
 
 # Playwright settings
-DOWNLOAD_HANDLERS = {
-    "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
-    "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
-}
+# DOWNLOAD_HANDLERS = {
+#     "http": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+#     "https": "scrapy_playwright.handler.ScrapyPlaywrightDownloadHandler",
+# }
 
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 15
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
 DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
+CONCURRENT_REQUESTS_PER_DOMAIN = 5
 #CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
@@ -77,7 +79,21 @@ ITEM_PIPELINES = {
     'scrapy.pipelines.images.ImagesPipeline': 1
 }
 
-IMAGES_STORE = '../images'
+IMAGES_STORE = 's3://supermarkets-interprice/images/'
+IMAGES_STORE_S3_ACL = 'private' # public-read
+
+# Configuration for AWS
+
+dotenv_path = join(dirname(__file__), '.env')
+load_dotenv(dotenv_path)
+
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+AWS_SESSION_TOKEN = os.environ.get("AWS_SESSION_TOKEN")
+
+FEED_STORAGE_S3_ACL = 'private'
+# AWS_USE_SSL = True # or True (None by default)
+# AWS_VERIFY = True # or True (None by default)
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
