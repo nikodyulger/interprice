@@ -1,0 +1,49 @@
+service: interprice-rest-api
+
+plugins:
+  - serverless-python-requirements
+
+useDotenv: true
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+    slim: True
+    layer: True
+
+package:
+  exclude:
+    - env/**
+    - node_modules/**
+
+provider: 
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+  stage: dev
+  role: ${env:AWS_ROLE}
+    
+functions:
+  rest-api:
+    handler: app/main.handler
+    environment: 
+      DB_USER: ${env:DB_USER}
+      DB_PASSWORD: ${env:DB_PASSWORD}
+      DB_NAME: ${env:DB_NAME}
+      DB_PORT: ${env:DB_PORT}
+      RDS_HOST: ${env:RDS_HOST}
+      STAGE: ${self:provider.stage}
+    events:
+      - http: 
+          method: any
+          path: /{proxy+}
+          cors: true
+    vpc:
+      securityGroupIds:
+        - ${env:SEC_GROUP_ID}
+      subnetIds:
+        - ${env:SUBNET_A}
+        - ${env:SUBNET_B}
+        - ${env:SUBNET_C}
+    layers:
+      - { Ref: PythonRequirementsLambdaLayer }
