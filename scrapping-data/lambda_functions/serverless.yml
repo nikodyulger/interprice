@@ -1,0 +1,39 @@
+service: interprice-data-pipeline
+
+plugins:
+  - serverless-python-requirements
+
+useDotenv: true
+
+custom:
+  pythonRequirements:
+    dockerizePip: true
+
+provider:
+  name: aws
+  runtime: python3.8
+  region: us-east-1
+  role: ${env:AWS_ROLE}
+
+functions: 
+  data-pipeline:
+    handler: handler.data_pipeline
+    url: true
+    environment: 
+      RDS_HOST: ${env:RDS_HOST}
+      NAME: ${env:NAME}
+      PASSWORD: ${env:PASSWORD}
+      DB_NAME: ${env:DB_NAME}
+      SNS_TOPIC_ARN: ${env:SNS_TOPIC_ARN}
+      S3_IMAGE_URL: ${env:S3_IMAGE_URL}
+    vpc:
+      securityGroupIds:
+        - ${env:SEC_GROUP_ID}
+      subnetIds:
+        - ${env:SUBNET_A}
+        - ${env:SUBNET_B}
+        - ${env:SUBNET_C}
+        - ${env:SUBNET_D}
+        - ${env:SUBNET_E}
+        - ${env:SUBNET_F}
+
