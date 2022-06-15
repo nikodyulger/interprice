@@ -48,17 +48,22 @@ The app was compiled with `npm run build` to convert it in a static web and then
 
 The entire deployed infrastructure can be visualized on the following figure.
 
+![Cloud Architecture](./arquitectura_final.png)
+
 The data web scrapping is performed locally due to some restrictions and all the extracted data is stored in S3 bucket. One finished the scrapping a Lambda function is launched and it has the role of a pipeline storing the data into a Aurora BBDD. Once the pipeline function has finished, a notification is send with *information* about how the process has gone. There are also available execution logs in AWS CloudWatch. 
 
 The second part of the architecture is the API REST represented as a Lambda function which handles requests from API Gateway. Meanwhile the users are connected through the app hosted in a S3 bucket, but distributed with AWS Cloudfront.
 
-Teh deployment process has been made by two ways:
+The deployment process has been made by two ways:
   - Serverless *yml* files, mainly for Lambdas definitions
   - AWS console for the creation of buckets, VPC managements or the creation of the BBDD due to its ease of use.
 
 # Demo
 
 Although the app is deployed in AWS, the credit for the student account is not unlimited so it is not possible to make it public forver. However, here you have a demo with a GIF of how the app works.
+
+![DEMO](./demo.gif)
+
 
 
 # Acknowledgments
